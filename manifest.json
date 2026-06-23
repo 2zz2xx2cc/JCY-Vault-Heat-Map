@@ -1,0 +1,9 @@
+{
+  "id": "vault-heatmap",
+  "name": "Vault Heatmap",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "展示整个仓库中文档改动的热力图，数据来源于文件的实际修改时间。",
+  "author": "ChongYang",
+  "isDesktopOnly": false
+}

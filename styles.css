@@ -1,0 +1,453 @@
+/* ═══════════════════════════════════════════════════════════════
+   Vault Heatmap Plugin Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 根容器 ─────────────────────────────────────────────────── */
+.vault-heatmap-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background: var(--background-primary);
+  font-family: var(--font-interface);
+  color: var(--text-normal);
+}
+
+/* ── 顶部工具栏 ──────────────────────────────────────────────── */
+.vhm-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px 10px;
+  border-bottom: 1px solid var(--divider-color);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.vhm-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-normal);
+  white-space: nowrap;
+}
+
+.vhm-stats {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.vhm-stat-item {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.vhm-stat-sep {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* ── 范围切换按钮 ─────────────────────────────────────────────── */
+.vhm-range-bar {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.vhm-range-btn {
+  padding: 3px 10px;
+  font-size: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--divider-color);
+  background: var(--background-secondary);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1.5;
+}
+
+.vhm-range-btn:hover {
+  background: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.vhm-range-btn-active {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  border-color: var(--interactive-accent);
+}
+
+.vhm-range-btn-active:hover {
+  background: var(--interactive-accent-hover);
+  color: var(--text-on-accent);
+}
+
+/* ── 主体布局：热力图 + 详情面板 ─────────────────────────────── */
+/* 中间区域：热力图 + 详情面板共同撑满剩余高度 */
+.vhm-body-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.vhm-heatmap-wrap {
+  flex: 1;
+  overflow: auto;
+  padding: 20px 20px 12px;
+  min-height: 0;
+  transition: flex 0.2s ease;
+}
+
+/* ── 月份标签行 ──────────────────────────────────────────────── */
+.vhm-month-row {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 4px;
+}
+
+.vhm-dow-spacer {
+  width: 28px;
+  flex-shrink: 0;
+}
+
+.vhm-months-grid {
+  display: flex;
+  gap: 3px;
+}
+
+.vhm-month-cell {
+  width: 13px;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: left;
+  white-space: nowrap;
+  overflow: visible;
+  line-height: 1;
+}
+
+/* ── 主体：星期标签 + 格子 ───────────────────────────────────── */
+.vhm-body {
+  display: flex;
+  gap: 0;
+}
+
+.vhm-dow-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 28px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+.vhm-dow-label {
+  height: 13px;
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 13px;
+  text-align: right;
+  padding-right: 4px;
+}
+
+/* ── 格子网格 ────────────────────────────────────────────────── */
+.vhm-grid {
+  display: flex;
+  gap: 3px;
+}
+
+.vhm-week-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+/* ── 单个格子 ────────────────────────────────────────────────── */
+.vhm-cell {
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
+
+.vhm-cell-empty {
+  background: transparent;
+}
+
+.vhm-cell-future {
+  background: var(--background-modifier-border);
+  opacity: 0.3;
+}
+
+/* 色阶 0-5（适配亮色/暗色主题） */
+.vhm-cell-l0 {
+  background: var(--background-modifier-border);
+}
+
+.vhm-cell-l1 {
+  background: #9be9a8;
+}
+
+.vhm-cell-l2 {
+  background: #40c463;
+}
+
+.vhm-cell-l3 {
+  background: #30a14e;
+}
+
+.vhm-cell-l4 {
+  background: #216e39;
+}
+
+.vhm-cell-l5 {
+  background: #0d4a20;
+}
+
+/* 暗色主题下调整色阶 */
+.theme-dark .vhm-cell-l0 {
+  background: #161b22;
+}
+
+.theme-dark .vhm-cell-l1 {
+  background: #0e4429;
+}
+
+.theme-dark .vhm-cell-l2 {
+  background: #006d32;
+}
+
+.theme-dark .vhm-cell-l3 {
+  background: #26a641;
+}
+
+.theme-dark .vhm-cell-l4 {
+  background: #39d353;
+}
+
+.theme-dark .vhm-cell-l5 {
+  background: #56e86a;
+}
+
+.vhm-cell-clickable {
+  cursor: pointer;
+}
+
+.vhm-cell-clickable:hover {
+  transform: scale(1.4);
+  z-index: 10;
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 1px;
+}
+
+.vhm-cell-selected {
+  outline: 2px solid var(--interactive-accent);
+  outline-offset: 1px;
+  transform: scale(1.2);
+  z-index: 5;
+}
+
+/* ── Tooltip（全局浮动，挂在 root 下，JS 控制显隐和定位） ──── */
+.vhm-tooltip-float {
+  position: absolute;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.82);
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 200;
+  line-height: 1.4;
+}
+
+/* 向上的小三角 */
+.vhm-tooltip-float::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.82);
+}
+
+/* ── Sparkline 横条（仿 vault-pulse）────────────────────────── */
+.vhm-sparkline {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 36px;
+  margin-top: 14px;
+  margin-bottom: 4px;
+  padding: 0 2px;
+}
+
+.vhm-sparkline-bar {
+  flex: 1;
+  min-width: 3px;
+  max-width: 14px;
+  height: var(--vhm-bar-height, 6%);
+  border-radius: 2px 2px 0 0;
+  background: var(--background-modifier-border);
+  transition: background 0.15s ease, transform 0.1s ease;
+  cursor: default;
+  position: relative;
+}
+
+/* 有数据的柱子，按 data-level 着色 */
+.vhm-sparkline-bar.is-active {
+  cursor: pointer;
+}
+
+.vhm-sparkline-bar[data-level="1"] { background: #9be9a8; }
+.vhm-sparkline-bar[data-level="2"] { background: #40c463; }
+.vhm-sparkline-bar[data-level="3"] { background: #30a14e; }
+.vhm-sparkline-bar[data-level="4"] { background: #216e39; }
+
+.theme-dark .vhm-sparkline-bar[data-level="1"] { background: #0e4429; }
+.theme-dark .vhm-sparkline-bar[data-level="2"] { background: #006d32; }
+.theme-dark .vhm-sparkline-bar[data-level="3"] { background: #26a641; }
+.theme-dark .vhm-sparkline-bar[data-level="4"] { background: #39d353; }
+
+.vhm-sparkline-bar.is-active:hover {
+  filter: brightness(1.25);
+  transform: scaleY(1.08);
+  transform-origin: bottom;
+  z-index: 5;
+}
+
+/* ── 图例 ────────────────────────────────────────────────────── */
+.vhm-legend {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 12px;
+  justify-content: flex-end;
+}
+
+.vhm-legend-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0 2px;
+}
+
+.vhm-legend-cell {
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+  cursor: default;
+}
+
+/* ── 详情面板 ────────────────────────────────────────────────── */
+.vhm-detail-panel {
+  flex-shrink: 0;
+  border-top: 1px solid var(--divider-color);
+  /* 高度由 JS 动态设置，初始为 auto（仅占 placeholder 高度） */
+  height: auto;
+  max-height: none;
+  overflow-y: auto;
+  padding: 0 20px 12px;
+  transition: height 0.2s ease;
+}
+
+/* 展开状态：JS 会设置具体 height 值 */
+.vhm-detail-panel.is-expanded {
+  flex-shrink: 0;
+}
+
+.vhm-detail-placeholder {
+  padding: 16px 0 8px;
+  font-size: 13px;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+.vhm-detail-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 12px 0 8px;
+  position: sticky;
+  top: 0;
+  background: var(--background-primary);
+  z-index: 2;
+  border-bottom: 1px solid var(--divider-color);
+  margin-bottom: 4px;
+}
+
+.vhm-detail-date {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.vhm-detail-count {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.vhm-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vhm-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.vhm-detail-item:hover {
+  background: var(--background-modifier-hover);
+}
+
+.vhm-detail-name {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-normal);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vhm-detail-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.vhm-detail-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+/* ── 滚动条美化 ──────────────────────────────────────────────── */
+.vhm-heatmap-wrap::-webkit-scrollbar,
+.vhm-detail-panel::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.vhm-heatmap-wrap::-webkit-scrollbar-thumb,
+.vhm-detail-panel::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-bg);
+  border-radius: 3px;
+}
